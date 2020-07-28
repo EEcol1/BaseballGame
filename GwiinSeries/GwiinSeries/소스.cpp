@@ -23,11 +23,12 @@ void init() {
 	//홈 선발
 	cout << "홈팀 선발투수: ";
 	cin >> hpitch;
-	auto iter1 = Pitching.getPlayerInfo().find(hpitch);
-	while (iter1 == Pitching.getPlayerInfo().end()) {
+	map<string, vector<double>> PitcherInfo = Pitching.getPlayerInfo();
+	auto iter1 = PitcherInfo.find(hpitch);
+	while (iter1 == PitcherInfo.end()) {
 		cout << "다시 입력하세요: ";
 		cin >> hpitch;
-		iter1 = Pitching.getPlayerInfo().find(hpitch);
+		iter1 = PitcherInfo.find(hpitch);
 	}
 	//HomePitcher 설정, 현재 투수 설정
 	PlayBall.setHomePitcher(hpitch);
@@ -35,11 +36,11 @@ void init() {
 	//원정 선발
 	cout << "원정팀 선발투수: ";
 	cin >> apitch;
-	auto iter2 = Pitching.getPlayerInfo().find(apitch);
-	while (iter2 == Pitching.getPlayerInfo().end()) {
+	auto iter2 = PitcherInfo.find(apitch);
+	while (iter2 == PitcherInfo.end()) {
 		cout << "다시 입력하세요: ";
 		cin >> apitch;
-		iter2 = Pitching.getPlayerInfo().find(apitch);
+		iter2 = PitcherInfo.find(apitch);
 	}
 	//AwayPitcher 설정
 	PlayBall.setAwayPitcher(apitch);
@@ -47,15 +48,16 @@ void init() {
 	//*********타자입력*******
 	vector<string> hbatVec, abatVec;
 	//홈
+	map<string, vector<double>> BatterInfo = Batting.getPlayerInfo();
 	for (int i = 0; i < 9; i++) {
 		cout << "홈팀 " << i + 1 << "번 타자: ";
 		string hbat;
 		cin >> hbat;
-		auto iter3 = Batting.getPlayerInfo().find(hbat);
-		while (iter3 == Batting.getPlayerInfo().end()) {
+		auto iter3 = BatterInfo.find(hbat);
+		while (iter3 == BatterInfo.end()) {
 			cout << "다시 입력하세요: ";
 			cin >> hbat;
-			iter3 = Batting.getPlayerInfo().find(hbat);
+			iter3 = BatterInfo.find(hbat);
 		}
 		//현재타자 목록
 		hbatVec.push_back(hbat);
@@ -68,11 +70,11 @@ void init() {
 		cout << "원정팀 " << i + 1 << "번 타자: ";
 		string abat;
 		cin >> abat;
-		auto iter4 = Batting.getPlayerInfo().find(abat);
-		while (iter4 == Batting.getPlayerInfo().end()) {
+		auto iter4 = BatterInfo.find(abat);
+		while (iter4 == BatterInfo.end()) {
 			cout << "다시 입력하세요: ";
 			cin >> abat;
-			iter4 = Batting.getPlayerInfo().find(abat);
+			iter4 = BatterInfo.find(abat);
 		}
 		//현재타자 목록
 		abatVec.push_back(abat);
