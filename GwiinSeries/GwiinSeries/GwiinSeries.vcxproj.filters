@@ -27,6 +27,15 @@
     <ClCompile Include="CurrentPlayer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Batter.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Pitcher.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Fielder.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scoreboard.h">
@@ -36,6 +45,15 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CurrentPlayer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Batter.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Pitcher.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Fielder.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,11 +3,9 @@ class Scoreboard
 {
 public:
 	//¾Æ¿ôÄ«¿îÆ®
-	void setOutCount(int outcount);
 	void plusOutCount();
 	int getOutCount() const;
 	//ÀÌ´×
-	void setInnNum(int outcount);
 	void plusInnNum();
 	int getInnNum() const;
 	void setInnHA(bool homeaway);

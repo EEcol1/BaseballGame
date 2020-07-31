@@ -1,6 +1,10 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "Batter.h"
+#include "Pitcher.h"
+#include "Fielder.h"
+
 using namespace std;
 class CurrentPlayer
 {
@@ -9,30 +13,32 @@ public:
 	string getAwayTeam();
 	void setHomeTeam(string hteam);
 	void setAwayTeam(string ateam);
-	string getHomePitcher();
-	string getAwayPitcher();
-	void setHomePitcher(string hpitch);
-	void setAwayPitcher(string apitch);
-	vector<string> getHomeBatter();
-	vector<string> getAwayBatter();
-	void setHomeBatter(vector<string> hbatvec);
-	void setAwayBatter(vector<string> abatvec);
-	string getCurrentPitcher();
-	string getCurrentBatter();
-	vector<string> getCurrentFielder();
+	Pitcher getHomePitcher();
+	Pitcher getAwayPitcher();
+	void setHomePitcher(Pitcher hpitch);
+	void setAwayPitcher(Pitcher apitch);
+	vector<Batter> getHomeBatter();
+	vector<Batter> getAwayBatter();
+	void setHomeBatter(vector<Batter> hbatvec);
+	void setAwayBatter(vector<Batter> abatvec);
+	//사용 여부 고민중
+	/*Pitcher getCurrentPitcher();
+	Batter getCurrentBatter();
+	vector<Fielder> getCurrentFielder();
 	void setCurrentPitcher(string cpitch);
 	void setCurrentBatter(string cbat);
-	void setCurrentFielder(vector<string> cfield);
+	void setCurrentFielder(vector<string> cfield);*/
 private:
 	string HomeTeam;
 	string AwayTeam;
-	string HomePitcher;
-	string AwayPitcher;
-	vector<string> HomeBatter;
-	vector<string> AwayBatter;
-	string CurrentPitcher;
-	string CurrentBatter;
-	vector<string> CurrentFielder;
+	Pitcher HomePitcher;
+	Pitcher AwayPitcher;
+	vector<Batter> HomeBatter;
+	vector<Batter> AwayBatter;
+
+	Pitcher CurrentPitcher;
+	Batter CurrentBatter;
+	vector<Fielder> CurrentFielder;
 	//정보는 어디다 저장할겨???
 
 };

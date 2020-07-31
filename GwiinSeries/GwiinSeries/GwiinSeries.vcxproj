@@ -138,14 +138,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Batter.cpp" />
     <ClCompile Include="CurrentPlayer.cpp" />
+    <ClCompile Include="Fielder.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Pitcher.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="소스.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Batter.h" />
     <ClInclude Include="CurrentPlayer.h" />
+    <ClInclude Include="Fielder.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Pitcher.h" />
     <ClInclude Include="Scoreboard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

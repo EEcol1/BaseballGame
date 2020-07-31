@@ -12,31 +12,31 @@ void CurrentPlayer::setAwayTeam(string ateam) {
 	AwayTeam = ateam;
 }
 
-string CurrentPlayer::getHomePitcher() {
+Pitcher CurrentPlayer::getHomePitcher() {
 	return HomePitcher;
 }
-string CurrentPlayer::getAwayPitcher() {
+Pitcher CurrentPlayer::getAwayPitcher() {
 	return AwayPitcher;
 }
-void CurrentPlayer::setHomePitcher(string hpitch) {
+void CurrentPlayer::setHomePitcher(Pitcher hpitch) {
 	HomePitcher = hpitch;
 }
-void CurrentPlayer::setAwayPitcher(string apitch) {
+void CurrentPlayer::setAwayPitcher(Pitcher apitch) {
 	AwayPitcher = apitch;
 }
-vector<string> CurrentPlayer::getHomeBatter() {
+vector<Batter> CurrentPlayer::getHomeBatter() {
 	return HomeBatter;
 }
-vector<string> CurrentPlayer::getAwayBatter() {
+vector<Batter> CurrentPlayer::getAwayBatter() {
 	return AwayBatter;
 }
-void CurrentPlayer::setHomeBatter(vector<string> hbatvec) {
+void CurrentPlayer::setHomeBatter(vector<Batter> hbatvec) {
 	HomeBatter = hbatvec;
 }
-void CurrentPlayer::setAwayBatter(vector<string> abatvec) {
+void CurrentPlayer::setAwayBatter(vector<Batter> abatvec) {
 	AwayBatter = abatvec;
 }
-
+/*
 string CurrentPlayer::getCurrentPitcher() {
 	return CurrentPitcher;
 }
@@ -54,4 +54,4 @@ void CurrentPlayer::setCurrentBatter(string cbat) {
 }
 void CurrentPlayer::setCurrentFielder(vector<string> cfield) {
 	CurrentFielder = cfield;
-}
+}*/
