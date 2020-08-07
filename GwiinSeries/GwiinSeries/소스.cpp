@@ -1,6 +1,7 @@
 #include "Input.h"
 #include "CurrentPlayer.h"
 #include "Scoreboard.h"
+#include "Random.h"
 #include <stdio.h>
 #include <iostream>
 #include <algorithm>
@@ -42,8 +43,7 @@ void init() {
 	//HomePitcher 설정, (현재 투수 설정)
 	//TeamInfo.setHomePitcher(hpitch);
 	//TeamInfo.setCurrentPitcher(hpitch);
-	Pitcher hpitcher;
-	hpitcher.setStat(PitcherInfo, hpname);
+	Pitcher hpitcher(PitcherInfo, hpname);
 	TeamInfo.setHomePitcher(hpitcher);
 
 	//원정 선발
@@ -57,8 +57,7 @@ void init() {
 	}
 	//AwayPitcher 설정
 	//TeamInfo.setAwayPitcher(apitch);
-	Pitcher apitcher;
-	apitcher.setStat(PitcherInfo, apname);
+	Pitcher apitcher(PitcherInfo, apname);
 	TeamInfo.setAwayPitcher(apitcher);
 
 	//*********타자입력*******
@@ -77,8 +76,7 @@ void init() {
 		}
 		//현재타자 목록
 		//hbatVec.push_back(hbat);
-		Batter hbat;
-		hbat.setStat(BatterInfo, hbname);
+		Batter hbat(BatterInfo,hbname);
 		hbatVec.push_back(hbat);
 	}
 	//홈팀 타순 설정
@@ -96,8 +94,7 @@ void init() {
 			iter4 = BatterInfo.find(abname);
 		}
 		//현재타자 목록
-		Batter abat;
-		abat.setStat(BatterInfo, abname);
+		Batter abat(BatterInfo,abname);
 		abatVec.push_back(abat);
 	}
 	//원정팀 타순 설정 및 (현재 타자 설정)
@@ -145,21 +142,72 @@ int main() {
 	Catching.setPlayerInfo("test.txt", 8);
 
 	init();
-	Scoreboard GB;
+	Scoreboard Game;
+	Random random;
+	enum 숫자계산 { BB, SIN, DOU, TRI, HR, SO, FO, GO };
 	//1-9회 ok 10-12회:초 공격이면 그대로 진행, 말공격이면 
-	while (GB.getInnNum() >= 1 && GB.getInnNum() < 13) {
-		enum 초말 { 초, 말 };
-		if (GB.getInnNum() >= 10) {
-			if (GB.getInnHA() == 말 && GB.getHomeScore() > GB.getAwayScore()) {
-				cout << "끝내기" << endl;
-				break;
-			}
-			//OutCount 3개 다시 보자
-			if (GB.getInnHA() == 말 && GB.getHomeScore() != GB.getAwayScore() && GB.getOutCount() == 3) {
-				break;
-			}
+	enum 초말{초,말};
+	bool previousState = 말;
+	int hometasoon = 0;
+	int awaytasoon = 0;
+	while (!Game.isGameEnd()) {
+		//공수교대시 이닝(초,말) 표시
+		if (previousState != Game.getInnHA())
+			Game.printInnInfo();
+		//초 공격 시
+		if (Game.getInnHA() == 초) {
+			//현재 타자,현재투수 설정
+			Game.setCurrentBatter(TeamInfo.getAwayBatter()[awaytasoon]);
+			Game.setCurrentPitcher(TeamInfo.getHomePitcher());
+			//현재 타자,투수 출력
+			Game.printCurrentInfo();
+			Game.setPercentage();
+		}
+		int number = random.hitBall();
+		//볼넷
+		if (number < Game.getPercentage()[BB]) {
+			//1루 비어있으면 그냥 추가, 1루 안 비어있으면 한 칸씩 앞으로
+
+
+		}
+		if (number <= Game.getPercentage()[SIN]) {
+			//안타
+			//1베이스씩 진루, 확률에 의해 추가진루
+		}
+		if (number <= Game.getPercentage()[DOU]) {
+			//2루타
+			//2베이스씩 진루, 확률에 의한 추가진루
+		}
+		if (number <= Game.getPercentage()[TRI]) {
+			//3루타
+			//싹쓸이
+		}
+		if (number <= Game.getPercentage()[HR]) {
+			//HR
+			//싹쓸이
+		}
+		if (number <= Game.getPercentage()[SO]) {
+			//삼진
+			cout << "삼진~~" << endl;
+			Game.plusOutCount();
+		}
+		if (number <= Game.getPercentage()[FO]) {
+			//플라이
+			cout << "플라이 아웃" << endl;
+			Game.plusOutCount();
+			//일정확률로 추가진루
+		}
+		if (number <= 10000) {
+			cout << "땅볼" << endl;
+			Game.plusOutCount();
+			//일정확률로 추가진루, 일정확률로 병살타.
 		}
 
+		
+
+		
+
+		bool previousState = Game.getInnHA();
 	}
 
 

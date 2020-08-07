@@ -1,54 +1,75 @@
 #pragma once
+#include <iostream>
+#include <vector>
+#include "Batter.h"
+#include "Pitcher.h"
+#include "Fielder.h"
+#include "Runner.h"
+#include "Catcher.h"
+#include "CurrentPlayer.h"
+using namespace std;
+
 class Scoreboard
 {
 public:
 	//아웃카운트
+	Scoreboard();
+	Scoreboard(CurrentPlayer teaminfo);
+	bool isGameEnd();
+	void changeInning();
+
 	void plusOutCount();
-	int getOutCount() const;
+	void  printOutCount() const;
 	//이닝
-	void plusInnNum();
-	int getInnNum() const;
-	void setInnHA(bool homeaway);
+
+	void printInnInfo() const;
 	bool getInnHA() const;
 	//주자상황
-	void setBaseSit(bool base1, bool base2, bool base3);
-	bool getBase1() const;
-	bool getBase2() const;
-	bool getBase3() const;
+	
+	void moveRunner(int a); 
+	void addRunner(int a);
+
 	//점수
-	void setHomeScore(int homescore);
-	void plusHomeScore(int plusscore);
-	int getHomeScore() const;
-	void setAwayScore(int awayscore);
-	void plusAwayScore(int plusscore);
-	int getAwayScore() const;
+	void plusScore(int plusscore);
+	void printScore() const;
+	
+	//투수 타자
+	void printCurrentInfo() const;
+	void setCurrentBatter(Batter cbat);
+	void setCurrentPitcher(Pitcher cpit);
+	//확률
+	void setPercentage();
+	vector<int> getPercentage() const;
 	//투구수
-	void setCurrentPitcherNP(int NP);
-	void plusCurrentPitcherNP(int NP);
-	int getCurrentPitcherNP() const;
 
-	void setHomePitcherNP(int NP);
-	int getHomePitcherNP() const;
-	void setAwayPitcherNP(int NP);
-	int getAwayPitcherNP() const;
+	void setNumberPitch(Pitcher AwayPitcher,Pitcher HomePitcher);
+	void updateNumberPitch();
 	//타자 및 수비 및 주자에 대한 정보
-
+	
+	//
+	vector<int> getBallNumber();
 private:
 	//아웃카운트
 	int OutCount;
 	//이닝
-	//초 공격vs 말 공격 1이면 말 공격,0이면 초 공격
+	//초 공격vs 말 공격 1이면 말공격,0이면 초 공격
 	int InnNum;
 	bool InnHA;
 	//주자 상황 *주자 INFO도 들어가야 함.
-	bool BaseSit[3];
+	vector<Runner> BaseSit;
 	//홈,어웨이 점수
-	int HomeScore;
-	int AwayScore;
+	int Score[2];
 	//투구수
-	int HomePitcherNP;
-	int AwayPitcherNP;
-	int CurrentPitcherNP;
+	int NumberPitch[2];
+	
+	Batter CurrentBatter;
+	Pitcher CurrentPitcher;
+
+	vector<int> Percent;
+
+	//Catcher CurrentCatcher;
+	//Fielder CurrentFielder;
+
 	//현재 투수 및 현재 타자에 대한 정보
 	/*
 	자료형 미결정

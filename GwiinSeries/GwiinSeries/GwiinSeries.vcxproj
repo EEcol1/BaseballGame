@@ -139,19 +139,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Batter.cpp" />
+    <ClCompile Include="Catcher.cpp" />
     <ClCompile Include="CurrentPlayer.cpp" />
     <ClCompile Include="Fielder.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Pitcher.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Random.cpp" />
+    <ClCompile Include="Runner.cpp" />
     <ClCompile Include="Scoreboard.cpp" />
     <ClCompile Include="소스.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Batter.h" />
+    <ClInclude Include="Catcher.h" />
     <ClInclude Include="CurrentPlayer.h" />
     <ClInclude Include="Fielder.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Pitcher.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Random.h" />
+    <ClInclude Include="Runner.h" />
     <ClInclude Include="Scoreboard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

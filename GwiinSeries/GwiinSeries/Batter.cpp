@@ -1,26 +1,37 @@
 #include "Batter.h"
-void Batter::setCondition() {
-	//랜덤 오브젝트 만든다음에 생각
-}
-void Batter::setStat(map<string, vector<double>> playerinfo, string player) {
-	name = player;
-	//condition 먼저 설정
-	//condition=5가지 랜덤
-	//밑의 스탯에 컨디션 곱해야.
-	BBP = playerinfo[player][0];
-	singleP = playerinfo[player][1];
-	doubleP = playerinfo[player][2];
-	tripleP = playerinfo[player][3];
-	HRP = playerinfo[player][4];
-	SOP = playerinfo[player][5];
-	FOP = playerinfo[player][6];
-	GOP = playerinfo[player][7];
+#include "Random.h"
+//constructor 만들어야지...
+Batter::Batter() {
+	Name = "unselected";
+	Condition = 1;
+	vector<double> a(8);
+	BatterStat=a;
 
 }
-string Batter::getname() {
-	return name;
+Batter::Batter(map<string, vector<double>> playerinfo, string player) {
+	Name = player;
+	//Condition 랜덤
+	BatterStat = playerinfo[player];
+	Random random;
+	Condition = random.randgen();
 }
-double Batter::getBBP() {
+void Batter::setStat(map<string, vector<double>> playerinfo, string player) {
+	Name = player;
+	//condition 먼저 설정
+	BatterStat = playerinfo[player];
+	Condition = 1;
+}
+void Batter::setCondition() {
+	//안타 확률만 달라질건지 볼넷 확률만 달라질건지
+	for (int i = 0; i <=HRP; i++) {
+		BatterStat[i] *= Condition;
+	}
+	BatterStat[SOP] *= (2 - Condition);
+}
+vector<double> Batter::getStat() const {
+	return BatterStat;
+}
+/*double Batter::getBBP() {
 	return BBP;
 }
 double Batter::getsingleP() {
@@ -44,6 +55,6 @@ double Batter::getFOP() {
 double Batter::getGOP() {
 	return GOP;
 }
-double Batter::getcondition() {
+double Batter::getCondition() {
 	return condition;
-}
+}*/

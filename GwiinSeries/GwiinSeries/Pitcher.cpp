@@ -1,50 +1,34 @@
 #include "Pitcher.h"
+#include "Random.h"
+Pitcher::Pitcher() {
+	//기본생성자
+}
+Pitcher::Pitcher(map<string, vector<double>> playerinfo, string player) {
+	Name = player;
+	//Condition 랜덤
+	PitcherStat = playerinfo[player];
+	Random random;
+	Condition = random.randgen();
+}
 
 void Pitcher::setCondition() {
 	//랜덤 오브젝트 만든다음에 생각
 }
 void Pitcher::setStat(map<string, vector<double>> playerinfo, string player) {
-	name = player;
-	//condition 먼저 설정
-	//condition=5가지 랜덤
-	//밑의 스탯에 컨디션 곱해야.
-	BBT = playerinfo[player][0];
-	singleT = playerinfo[player][1];
-	doubleT = playerinfo[player][2];
-	tripleT = playerinfo[player][3];
-	HRT = playerinfo[player][4];
-	SOT = playerinfo[player][5];
-	FOT = playerinfo[player][6];
-	GOT = playerinfo[player][7];
-
+	Name = player;
+	//Condition 랜덤
+	PitcherStat = playerinfo[player];
 }
-string Pitcher::getname() {
-	return name;
+void Pitcher::setCondition() {
+	//안타만 아니면 볼넷 확률도
+	for (int i = 0; i <= HRT; i++) {
+		PitcherStat[i] *= (2-Condition);
+	}
+	PitcherStat[SOT] *= (2 - Condition);
 }
-double Pitcher::getBBT() {
-	return BBT;
+vector<double> Pitcher::getStat() const {
+	return PitcherStat;
 }
-double Pitcher::getsingleT() {
-	return singleT;
-}
-double Pitcher::getdoubleT() {
-	return doubleT;
-}
-double Pitcher::gettripleT() {
-	return tripleT;
-}
-double Pitcher::getHRT() {
-	return HRT;
-}
-double Pitcher::getSOT() {
-	return SOT;
-}
-double Pitcher::getFOT() {
-	return FOT;
-}
-double Pitcher::getGOT() {
-	return GOT;
-}
-double Pitcher::getcondition() {
-	return condition;
-}
+/*int Pitcher::getNP() const{
+	return NP;
+}*/

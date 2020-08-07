@@ -36,9 +36,9 @@ private:
 	vector<Batter> HomeBatter;
 	vector<Batter> AwayBatter;
 
-	Pitcher CurrentPitcher;
-	Batter CurrentBatter;
-	vector<Fielder> CurrentFielder;
+	//Pitcher CurrentPitcher;
+	//Batter CurrentBatter;
+	//vector<Fielder> CurrentFielder;
 	//정보는 어디다 저장할겨???
 
 };

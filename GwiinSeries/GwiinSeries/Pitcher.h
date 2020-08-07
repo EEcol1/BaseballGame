@@ -3,32 +3,21 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "Player.h"
 using namespace std;
-class Pitcher
+enum Åõ¼ö½ºÅÈ { BBT, singleT, doubleT, tripleT, HRT, SOT, FOT, GOT, NP, SAP, SSP};
+class Pitcher :public Player
 {
 public:
-	void setCondition();
-	void setStat(map<string, vector<double>> playerinfo, string player);
-	string getname();
-	double getBBT();
-	double getsingleT();
-	double getdoubleT();
-	double gettripleT();
-	double getHRT();
-	double getSOT();
-	double getFOT();
-	double getGOT();
-	double getcondition();
+	Pitcher();
+	Pitcher(map<string, vector<double>> playerinfo, string player);
+	virtual void setCondition();
+	virtual void setStat(map<string, vector<double>> playerinfo, string player);
+	virtual vector<double> getStat() const;
+
+//	int getNP() const;
 private:
-	string name;
-	double BBT;
-	double singleT;
-	double doubleT;
-	double tripleT;
-	double HRT;
-	double SOT;
-	double FOT;
-	double GOT;
-	double condition;
+	vector<double> PitcherStat;
+
 };
 

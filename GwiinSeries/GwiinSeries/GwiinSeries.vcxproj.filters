@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Player">
+      <UniqueIdentifier>{f6ee6fd5-5d61-4cc0-9fca-0a1a04595857}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Player">
+      <UniqueIdentifier>{079f1da0-f11b-47b7-87bc-7802df63a859}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scoreboard.cpp">
@@ -28,12 +34,24 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Batter.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Pitcher.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Catcher.cpp">
+      <Filter>소스 파일\Player</Filter>
     </ClCompile>
     <ClCompile Include="Fielder.cpp">
+      <Filter>소스 파일\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Pitcher.cpp">
+      <Filter>소스 파일\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Runner.cpp">
+      <Filter>소스 파일\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,12 +66,24 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Batter.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Pitcher.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Catcher.h">
+      <Filter>헤더 파일\Player</Filter>
     </ClInclude>
     <ClInclude Include="Fielder.h">
+      <Filter>헤더 파일\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Pitcher.h">
+      <Filter>헤더 파일\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Runner.h">
+      <Filter>헤더 파일\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>헤더 파일\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

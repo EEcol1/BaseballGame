@@ -3,33 +3,21 @@
 #include <string>
 #include <map>
 #include <vector>
-
+#include "Player.h"
 using namespace std;
-class Batter
+enum Å¸ÀÚ½ºÅÈ{BBP,singleP,doubleP,tripleP,HRP,SOP,FOP,GOP};
+class Batter: public Player 
 {
 public:
-	void setCondition();
-	void setStat(map<string, vector<double>> playerinfo, string player);
-	string getname();
-	double getBBP();
-	double getsingleP();
-	double getdoubleP();
-	double gettripleP();
-	double getHRP();
-	double getSOP();
-	double getFOP();
-	double getGOP();
-	double getcondition();
+	Batter();
+	Batter(map<string, vector<double>> playerinfo, string player);
+	virtual void setCondition();
+	virtual void setStat(map<string, vector<double>> playerinfo, string player);
+	virtual vector<double> getStat() const;
+	
+	
+	
 private:
-	string name;
-	double BBP;
-	double singleP;
-	double doubleP;
-	double tripleP;
-	double HRP;
-	double SOP;
-	double FOP;
-	double GOP;
-	double condition;
+	vector<double> BatterStat;
 };
 
