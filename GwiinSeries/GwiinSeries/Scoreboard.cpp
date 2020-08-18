@@ -26,8 +26,8 @@ Scoreboard::Scoreboard(CurrentPlayer teaminfo) {
 	InnNum = 1;
 	InnHA = 초;
 	Score[초] = Score[말] = 0;
-	NumberPitch[원정] = teaminfo.getAwayPitcher().getStat[NP]();
-	NumberPitch[홈] = teaminfo.getHomePitcher().getStat[NP]();
+	NumberPitch[원정] = teaminfo.getAwayPitcher().getStat()[NP];
+	NumberPitch[홈] = teaminfo.getHomePitcher().getStat()[NP];
 	CurrentBatter = teaminfo.getAwayBatter()[0];
 	CurrentPitcher = teaminfo.getHomePitcher();
 	//CurrentFielder 와 CurrentCatcher도 초기화

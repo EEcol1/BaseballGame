@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Base.cpp" />
     <ClCompile Include="Batter.cpp" />
     <ClCompile Include="Catcher.cpp" />
     <ClCompile Include="CurrentPlayer.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="소스.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Base.h" />
     <ClInclude Include="Batter.h" />
     <ClInclude Include="Catcher.h" />
     <ClInclude Include="CurrentPlayer.h" />

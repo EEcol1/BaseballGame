@@ -14,12 +14,15 @@ Batter::Batter(map<string, vector<double>> playerinfo, string player) {
 	BatterStat = playerinfo[player];
 	Random random;
 	Condition = random.randgen();
+	Batter::setCondition();
 }
 void Batter::setStat(map<string, vector<double>> playerinfo, string player) {
 	Name = player;
-	//condition 먼저 설정
 	BatterStat = playerinfo[player];
-	Condition = 1;
+	//컨디션 설정
+	Random random;
+	Condition = random.randgen();
+	Batter::setCondition();
 }
 void Batter::setCondition() {
 	//안타 확률만 달라질건지 볼넷 확률만 달라질건지
@@ -31,30 +34,3 @@ void Batter::setCondition() {
 vector<double> Batter::getStat() const {
 	return BatterStat;
 }
-/*double Batter::getBBP() {
-	return BBP;
-}
-double Batter::getsingleP() {
-	return singleP;
-}
-double Batter::getdoubleP() {
-	return doubleP;
-}
-double Batter::gettripleP() {
-	return tripleP;
-}
-double Batter::getHRP() {
-	return HRP;
-}
-double Batter::getSOP() {
-	return SOP;
-}
-double Batter::getFOP() {
-	return FOP;
-}
-double Batter::getGOP() {
-	return GOP;
-}
-double Batter::getCondition() {
-	return condition;
-}*/

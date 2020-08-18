@@ -1,0 +1,55 @@
+if (what == DOU && thirdBase.size()==1) {
+		int bound = (int)(thirdBase[0].getStat()[addBaseP] * 4090);
+		if (number <= bound)
+			backHome.push_back(thirdBase[0]);
+		thirdBase.clear();
+	}
+	if (what == SIN && thirdBase.size() == 1) {
+		int bound = (int)(thirdBase[0].getStat()[addBaseP] * 6800);
+		if (number <= bound)
+			backHome.push_back(thirdBase[0]);
+		thirdBase.clear();
+	}
+	if(what==SIN &&thirdBase.size()==0 &&secondBase.size()==1){
+		int bound = (int)(secondBase[0].getStat()[addBaseP] * 2880);
+		if (number <= bound)
+			thirdBase = secondBase;
+		secondBase.clear();	
+	}
+	if (what == FO && thirdBase.size() == 1) {
+		int bound = (int)(thirdBase[0].getStat()[addBaseP] * 7640);
+		if (number <= bound)
+			backHome.push_back(thirdBase[0]);
+		thirdBase.clear();
+	}
+	if (what == FO && thirdBase.size() == 0 && secondBase.size() == 1) {
+		int bound = (int)(secondBase[0].getStat()[addBaseP] * 2880);
+		if (number <= bound)
+			thirdBase = secondBase;
+		secondBase.clear();
+	}
+	if (what == GO && thirdBase.size() == 1) {
+		int bound= (int)(thirdBase[0].getStat()[addBaseP] * 5160);
+		if (number <= bound)
+			backHome.push_back(thirdBase[0]);
+		thirdBase.clear();
+	}
+	if (what == GO && thirdBase.size() == 0 && secondBase.size() == 1) {
+		int bound = (int)(secondBase[0].getStat()[addBaseP] * 6400);
+		if (number <= bound)
+			thirdBase = secondBase;
+		secondBase.clear();
+	}
+	if (what == GO && secondBase.size() == 0 && firstBase.size() == 1) {
+		int bound = (int)(firstBase[0].getStat()[addBaseP] * 6400);
+		if (number <= bound)
+			secondBase = firstBase;
+		firstBase.clear();
+	}
+	if (what == DO && thirdBase.size() == 1 && firstBase.size() == 0) {
+		thirdBase = secondBase;
+		secondBase = firstBase;
+		firstBase.clear();
+	}
+	if(what==DO &&firstBase.size()==1)
+}
