@@ -1,7 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Batter.h"
-enum renum{addBaseP,stealAttP,stealP};
+enum аж╥Г╫╨ех { addBaseP, stealAttP, stealP };
 class Runner:public Player
 {public:
 	Runner();

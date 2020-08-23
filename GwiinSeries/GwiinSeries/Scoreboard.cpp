@@ -95,18 +95,14 @@ void Scoreboard::setPercentage() {
 	for (int i = 0; i < 8; i++) {
 		Percent.push_back(0);
 	}
-	int Inplay=10000;
-	for (int i = BB; i <= SO; i++) {
-		Percent[i] = (int)CurrentBatter.getStat()[i] * CurrentPitcher.getStat()[i] * 10000;
-		Inplay = Inplay - Percent[i];
+	Percent[BB] = (int)(CurrentBatter.getStat()[BB] * CurrentPitcher.getStat()[BB] * 10000);
+	int Inplay = 10000 - Percent[BB];
+	for (int i = SIN; i <= SO; i++) {
+		Percent[i] = Percent[i - 1] + (int)(CurrentBatter.getStat()[i] * CurrentPitcher.getStat()[i] * Inplay);
 	}
-	Percent[FO] = CurrentBatter.getStat()[FO] * CurrentPitcher.getStat()[FO] * Inplay;
-	Percent[GO] = Inplay - Percent[FO];
-
-	for (int i = 1; i < 8; i++) {
-		Percent[i] = Percent[i - 1] + Percent[i];
-	}
-
+	int Out = 10000 - Percent[SO];
+	Percent[FO] = Percent[SO]+(int)((CurrentBatter.getStat()[FO] + CurrentPitcher.getStat()[FO]) / 2.0 * Out);
+	Percent[GO] = 10000;
 }
 
 vector<int> Scoreboard::getPercentage() const {

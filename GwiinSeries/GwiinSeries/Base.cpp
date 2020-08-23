@@ -1,12 +1,7 @@
 #include "Base.h"
 #include "Random.h"
 enum 숫자계산 { BB, SIN, DOU, TRI, HR, SO, FO, GO,DO};
-Base::Base() {
-	firstBase.clear();
-	secondBase.clear();
-	thirdBase.clear();
-	backHome.clear();
-}
+
 void Base::init() {
 	firstBase.clear();
 	secondBase.clear();

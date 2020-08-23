@@ -23,8 +23,8 @@ void printInnInfo() const;
 //void plusScore(int plusscore);<-아직 안만듦
 //void printScore() const;<-아직 안만듦
 //주자
-void moveRunner(int a); <-아직 안만듦
-void addRunner(int a);<-아직 안만듦
+void moveRunner(int what, Runner who);
+void additionalBase(int what);
 //투수 타자
 void printCurrentInfo() const;
 void setCurrentBatter(Batter cbat);

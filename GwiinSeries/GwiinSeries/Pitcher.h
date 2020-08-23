@@ -5,7 +5,7 @@
 #include <vector>
 #include "Player.h"
 using namespace std;
-enum Åõ¼ö½ºÅÈ { BBT, singleT, doubleT, tripleT, HRT, SOT, FOT, GOT, NP, SAP, SSP};
+enum Åõ¼ö½ºÅÈ { BBT, singleT, doubleT, tripleT, HRT, SOT, FOT, GOT, NP, SAP, SSP };
 class Pitcher :public Player
 {
 public:

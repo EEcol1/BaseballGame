@@ -4,7 +4,6 @@
 using namespace std;
 class Base
 {public:
-	Base();
 	void init();
 	void moveRunner(int what,Runner who);
 	void additionalBase(int what);

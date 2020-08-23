@@ -5,7 +5,7 @@
 #include <vector>
 #include "Player.h"
 using namespace std;
-enum 타자스탯{BBP,singleP,doubleP,tripleP,HRP,SOP,FOP,GOP};
+enum 타자스탯 { BBP, singleP, doubleP, tripleP, HRP, SOP, FOP, GOP };
 class Batter: public Player 
 {
 public:
