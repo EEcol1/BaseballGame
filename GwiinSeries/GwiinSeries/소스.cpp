@@ -100,7 +100,7 @@ void init() {
 	}
 	//홈팀 타순 설정
 	TeamInfo.setHomeBatter(hbatVec);
-
+	
 	//원정
 	for (int i = 0; i < 9; i++) {
 		cout << "원정팀 " << i + 1 << "번 타자: ";
@@ -153,7 +153,7 @@ void init() {
 }
 bool isGameEnd() {
 	if (InnNum >= 13) return true;
-	if (InnNum >= 10 && InnNum < 13) {
+	if (InnNum >= 9 && InnNum < 13) {
 		if (InnHA == 초)
 			return false;
 		if (InnHA == 말 && (Score[말] > Score[초]))
@@ -204,6 +204,14 @@ void printInnInfo() {
 void printCurrentInfo() {
 	cout << "현재 투수: " << CurrentPitcher.getName() << endl;
 	cout << "현재 타자: " << CurrentBatter.getName() << endl;
+}
+void printEndInfo() {
+	cout << endl;
+	cout << "경기종료" << endl;
+	printScoreInfo();
+	if (Score[원정] == Score[홈]) cout << "비김" << endl;
+	else cout << (Score[원정] > Score[홈] ? TeamInfo.getAwayTeam() : TeamInfo.getHomeTeam()) << " 승리" << endl;
+
 }
 void setPercentage() {
 	//다시 만들 것
@@ -282,6 +290,18 @@ int main() {
 
 		string What;
 		cin >> What;
+		
+		//포수 스탯
+		if (base.checkStealAv()) {
+			int stealAttNum = random.hitBall();
+			//현재 투수 도루가능 스탯(평균 1) * 주자 도루시도 확률 스탯
+			int stealAttBound = CurrentPitcher.getStat()[SAP] * base.getFirstBaseStat()[stealAttP];
+			if (stealAttNum <= stealAttBound) {
+				int stealNum = random.hitBall();
+				//현재 포수 도루저지 스탯(평균 1)*주자 도루확률 스탯(base.getFirstBase().getStat()
+				//int stealBound= 
+			}
+		}
 		if (What == "도루") {
 			//do something
 		}
@@ -303,7 +323,7 @@ int main() {
 			string toBB = CurrentBatter.getName();
 			Runner toBBR(RunnerStat, toBB);
 			base.moveRunner(BB, toBBR);
-			Score[InnHA] += base.retScore();
+			
 			plusTasoon();
 		}
 		else if (number <= Percent[SIN]) {
@@ -314,7 +334,7 @@ int main() {
 			Runner toSINR(RunnerStat, toSIN);
 			base.moveRunner(SIN, toSINR);
 			base.additionalBase(SIN);
-			Score[InnHA] += base.retScore();
+			
 			plusTasoon();
 		}
 		else if (number <= Percent[DOU]) {
@@ -325,7 +345,6 @@ int main() {
 			Runner toDOUR(RunnerStat, toDOU);
 			base.moveRunner(DOU, toDOUR);
 			base.additionalBase(DOU);
-			Score[InnHA] += base.retScore();
 			plusTasoon();
 		}
 		else if (number <= Percent[TRI]) {
@@ -335,7 +354,7 @@ int main() {
 			string toTRI = CurrentBatter.getName();
 			Runner toTRIR(RunnerStat, toTRI);
 			base.moveRunner(TRI, toTRIR);
-			Score[InnHA] += base.retScore();
+			
 			plusTasoon();
 		}
 		else if (number <= Percent[HR]) {
@@ -345,7 +364,7 @@ int main() {
 			string toHR = CurrentBatter.getName();
 			Runner toHRR(RunnerStat, toHR);
 			base.moveRunner(HR, toHRR);
-			Score[InnHA] += base.retScore();
+		
 			plusTasoon();
 		}
 		else if (number <= Percent[SO]) {
@@ -358,7 +377,7 @@ int main() {
 			//플라이
 			cout << "플라이 아웃" << endl;
 			base.additionalBase(FO);
-			Score[InnHA] += base.retScore();
+			
 			plusTasoon();
 			plusOutCount();
 			//일정확률로 추가진루
@@ -373,20 +392,18 @@ int main() {
 			else
 				cout << "땅볼" << endl;
 				base.additionalBase(GO);
-			Score[InnHA] += base.retScore();
-			plusTasoon();;
+			
+			plusTasoon();
 			plusOutCount();
 			//일정확률로 추가진루, 일정확률로 병살타.
 		}
-
 		
-
+		cout << number << endl;
+		Score[InnHA] += base.retScore();
+		printScoreInfo();
 		
-
-		
+	
 	}
-
-
-
+	printEndInfo();
 	return 0;
 }

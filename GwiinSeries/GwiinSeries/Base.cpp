@@ -1,6 +1,6 @@
 #include "Base.h"
 #include "Random.h"
-enum 숫자계산 { BB, SIN, DOU, TRI, HR, SO, FO, GO,DO};
+enum 숫자계산 { BB, SIN, DOU, TRI, HR, SO, FO, GO,DO,SB};
 
 void Base::init() {
 	firstBase.clear();
@@ -177,7 +177,10 @@ void Base::additionalBase(int what) {
 				firstBase.clear();
 			}
 			break;
-
+		case SB:
+			secondBase = firstBase;
+			firstBase.clear();
+			break;
 	}
 	
 }
@@ -207,4 +210,12 @@ bool Base::checkDO(int OutCount) {
 		}
 		return 0;
 	}
+}
+bool Base::checkStealAv() {
+	if (firstBase.size() == 1 && secondBase.size() == 0)
+		return 1;
+	return 0;
+}
+vector<double> Base::getFirstBaseStat() {
+	return firstBase[0].getStat();
 }

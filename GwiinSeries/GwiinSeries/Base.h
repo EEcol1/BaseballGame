@@ -9,6 +9,8 @@ class Base
 	void additionalBase(int what);
 	int retScore();
 	bool checkDO(int OutCount);
+	bool checkStealAv();
+	vector<double> getFirstBaseStat();
 private:
 	vector<Runner> firstBase;
 	vector<Runner> secondBase;
