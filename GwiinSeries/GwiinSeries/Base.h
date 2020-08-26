@@ -9,6 +9,7 @@ class Base
 	void init();
 	void moveRunner(int what,Runner who);
 	void additionalBase(int what);
+	void SBOUT();
 	int retScore();
 	bool checkDO(int OutCount);
 	bool checkStealAv();
@@ -16,6 +17,7 @@ class Base
 	vector<double> getFirstBaseStat();
 	//확인 후 삭제
 	vector<bool> getSit();
+
 private:
 	vector<Runner> firstBase;
 	vector<Runner> secondBase;

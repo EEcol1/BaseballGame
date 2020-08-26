@@ -203,6 +203,9 @@ void Base::additionalBase(int what) {
 	}
 	
 }
+void Base::SBOUT(){
+	firstBase.clear();
+}
 int Base::retScore() {
 	int ret = backHome.size();
 	backHome.clear();
