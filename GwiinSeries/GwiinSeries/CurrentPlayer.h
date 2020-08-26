@@ -3,7 +3,8 @@
 #include <string>
 #include "Batter.h"
 #include "Pitcher.h"
-#include "Fielder.h"
+#include "Catcher.h"
+
 
 using namespace std;
 class CurrentPlayer
@@ -21,13 +22,12 @@ public:
 	vector<Batter> getAwayBatter();
 	void setHomeBatter(vector<Batter> hbatvec);
 	void setAwayBatter(vector<Batter> abatvec);
-	//사용 여부 고민중
-	/*Pitcher getCurrentPitcher();
-	Batter getCurrentBatter();
-	vector<Fielder> getCurrentFielder();
-	void setCurrentPitcher(string cpitch);
-	void setCurrentBatter(string cbat);
-	void setCurrentFielder(vector<string> cfield);*/
+	void changeHomeBatter(Batter cbat, int num);
+	void changeAwayBatter(Batter cbat, int num);
+	Catcher getHomeCatcher();
+	Catcher getAwayCatcher();
+	void setHomeCatcher(Catcher hcat);
+	void setAwayCatcher(Catcher acat);
 private:
 	string HomeTeam;
 	string AwayTeam;
@@ -35,6 +35,8 @@ private:
 	Pitcher AwayPitcher;
 	vector<Batter> HomeBatter;
 	vector<Batter> AwayBatter;
+	Catcher HomeCatcher;
+	Catcher AwayCatcher;
 
 	//Pitcher CurrentPitcher;
 	//Batter CurrentBatter;

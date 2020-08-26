@@ -36,6 +36,24 @@ void CurrentPlayer::setHomeBatter(vector<Batter> hbatvec) {
 void CurrentPlayer::setAwayBatter(vector<Batter> abatvec) {
 	AwayBatter = abatvec;
 }
+void CurrentPlayer::changeHomeBatter(Batter cbat, int num) {
+	HomeBatter[num] = cbat;
+}
+void CurrentPlayer::changeAwayBatter(Batter cbat, int num) {
+	AwayBatter[num] = cbat;
+}
+Catcher CurrentPlayer::getHomeCatcher() {
+	return HomeCatcher;
+}
+Catcher CurrentPlayer::getAwayCatcher() {
+	return AwayCatcher;
+}
+void CurrentPlayer::setHomeCatcher(Catcher hcat) {
+	HomeCatcher = hcat;
+}
+void CurrentPlayer::setAwayCatcher(Catcher acat) {
+	AwayCatcher = acat;
+}
 /*
 string CurrentPlayer::getCurrentPitcher() {
 	return CurrentPitcher;

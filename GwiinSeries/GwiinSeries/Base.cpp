@@ -1,6 +1,5 @@
 #include "Base.h"
 #include "Random.h"
-enum 숫자계산 { BB, SIN, DOU, TRI, HR, SO, FO, GO,DO,SB};
 
 void Base::init() {
 	firstBase.clear();
@@ -97,57 +96,65 @@ void Base::additionalBase(int what) {
 		case DOU:
 			if (thirdBase.size() == 1) {
 				int bound = (int)(thirdBase[0].getStat()[addBaseP] * 4090);
-				if (number <= bound)
+				if (number <= bound) {
 					backHome.push_back(thirdBase[0]);
-				thirdBase.clear();
+					thirdBase.clear();
+				}
 			}
 			break;
 		case SIN:
 			if (thirdBase.size() == 1) {
 				int bound = (int)(thirdBase[0].getStat()[addBaseP] * 6800);
-				if (number <= bound)
+				if (number <= bound) {
 					backHome.push_back(thirdBase[0]);
-				thirdBase.clear();
+					thirdBase.clear();
+				}
 			}
 			else if (thirdBase.size() == 0 && secondBase.size() == 1) {
 				int bound = (int)(secondBase[0].getStat()[addBaseP] * 2880);
-				if (number <= bound)
+				if (number <= bound) {
 					thirdBase = secondBase;
-				secondBase.clear();
+					secondBase.clear();
+				}
 			}
 			break;
 		case FO:
 			if (thirdBase.size() == 1) {
 				int bound = (int)(thirdBase[0].getStat()[addBaseP] * 7640);
-				if (number <= bound)
+				if (number <= bound) {
 					backHome.push_back(thirdBase[0]);
-				thirdBase.clear();
+					thirdBase.clear();
+				}
 			}
 			else if (thirdBase.size() == 0 && secondBase.size() == 1) {
 				int bound = (int)(secondBase[0].getStat()[addBaseP] * 2880);
-				if (number <= bound)
+				if (number <= bound) {
 					thirdBase = secondBase;
-				secondBase.clear();
+					secondBase.clear();
+				}
 			}
 			break;
 		case GO:
 			if (thirdBase.size() == 1) {
 				int bound = (int)(thirdBase[0].getStat()[addBaseP] * 5160);
-				if (number <= bound)
+				if (number <= bound) {
 					backHome.push_back(thirdBase[0]);
-				thirdBase.clear();
+					thirdBase.clear();
+				}
 			}
 			else if (thirdBase.size() == 0 && secondBase.size() == 1) {
 				int bound = (int)(secondBase[0].getStat()[addBaseP] * 6400);
-				if (number <= bound)
+				if (number <= bound) {
 					thirdBase = secondBase;
-				secondBase.clear();
+					secondBase.clear();
+				}
 			}
 			else if (secondBase.size() == 0 && firstBase.size() == 1) {
 				int bound = (int)(firstBase[0].getStat()[addBaseP] * 6400);
-				if (number <= bound)
+				if (number <= bound) {
 					secondBase = firstBase;
-				firstBase.clear();
+					firstBase.clear();
+				}
 			}
 			break;
 		case DO:
@@ -178,6 +185,18 @@ void Base::additionalBase(int what) {
 			}
 			break;
 		case SB:
+			secondBase = firstBase;
+			firstBase.clear();
+			break;
+		case P:
+			if (thirdBase.size() == 1)
+				backHome.push_back(thirdBase[0]);
+			thirdBase = secondBase;
+			secondBase = firstBase;
+			firstBase.clear();
+			break;
+		case B:
+			thirdBase = secondBase;
 			secondBase = firstBase;
 			firstBase.clear();
 			break;
@@ -216,6 +235,22 @@ bool Base::checkStealAv() {
 		return 1;
 	return 0;
 }
+bool Base::checkBuntAv() {
+	if (thirdBase.size() == 0)
+		return 1;
+	return 0;
+}
 vector<double> Base::getFirstBaseStat() {
 	return firstBase[0].getStat();
+}
+
+vector<bool> Base::getSit() {
+	vector<bool> sit;
+	for (int i = 0; i < 3; i++) {
+		sit.push_back(0);
+	}
+	sit[0] = (firstBase.size() == 1);
+	sit[1] = (secondBase.size() == 1);
+	sit[2] = (thirdBase.size() == 1);
+	return sit;
 }

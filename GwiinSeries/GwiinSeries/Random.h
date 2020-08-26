@@ -1,4 +1,5 @@
 #pragma once
+#include<string>
 #include<random>
 using namespace std;
 class Random
@@ -6,6 +7,7 @@ class Random
 	Random();
 	Random(int i);
 	double randgen();
+	int randNP(int a);
 	int hitBall();
 
 private:

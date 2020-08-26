@@ -13,6 +13,7 @@ Pitcher::Pitcher(map<string, vector<double>> playerinfo, string player) {
 	PitcherStat = playerinfo[player];
 	Random random;
 	Condition = random.randgen();
+	Pitcher::setCondition();
 }
 
 void Pitcher::setStat(map<string, vector<double>> playerinfo, string player) {
@@ -32,4 +33,10 @@ void Pitcher::setCondition() {
 }
 vector<double> Pitcher::getStat() const {
 	return PitcherStat;
+}
+void Pitcher::needChange() {
+	for (int i = 0; i <= HRT; i++) {
+		PitcherStat[i] *= 1.1;
+	}
+
 }

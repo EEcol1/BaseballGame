@@ -8,19 +8,16 @@
 #include <algorithm>
 using namespace std;
 Input Batting;
-Input Fielding;
 Input Running;
 Input Pitching;
 Input Catching;
 CurrentPlayer TeamInfo;
 enum 초말 { 초, 말 };
 enum 원정홈 { 원정, 홈 };
-enum 숫자계산 { BB, SIN, DOU, TRI, HR, SO, FO, GO,DO};
 
 int OutCount;
 int InnNum;
 bool InnHA;
-vector<Runner> BaseSit;
 int Score[2];
 int NumberPitch[2];
 int tasoon[2];
@@ -28,15 +25,10 @@ int& awaytasoon = tasoon[원정];
 int& hometasoon = tasoon[홈];
 Batter CurrentBatter;
 Pitcher CurrentPitcher;
+Catcher CurrentCatcher;
 vector<int> Percent;
 Base base;
 
-//얘네 전역변수로 놓고 써도 되나
-/*auto BatterInfo = Batting.getPlayerInfo();
-auto FielderInfo = Fielding.getPlayerInfo();
-auto RunningInfo = Running.getPlayerInfo();
-auto PitcherInfo = Pitching.getPlayerInfo();
-auto CatchingInfo = Catching.getPlayerInfo();*/
 
 void init() {
 	string hteam, ateam;
@@ -82,6 +74,7 @@ void init() {
 	//*********타자입력*******
 	vector<Batter> hbatVec, abatVec;
 	auto BatterInfo = Batting.getPlayerInfo();
+	auto CatcherInfo = Catching.getPlayerInfo();
 	//홈
 	for (int i = 0; i < 9; i++) {
 		cout << "홈팀 " << i + 1 << "번 타자: ";
@@ -97,6 +90,12 @@ void init() {
 		//hbatVec.push_back(hbat);
 		Batter hbat(BatterInfo,hbname);
 		hbatVec.push_back(hbat);
+		auto itercatch1 = CatcherInfo.find(hbname);
+		if (itercatch1 != CatcherInfo.end()) {
+			Catcher hcat(CatcherInfo, hbname);
+			TeamInfo.setHomeCatcher(hcat);
+		}
+
 	}
 	//홈팀 타순 설정
 	TeamInfo.setHomeBatter(hbatVec);
@@ -115,6 +114,11 @@ void init() {
 		//현재타자 목록
 		Batter abat(BatterInfo,abname);
 		abatVec.push_back(abat);
+		auto itercatch2 = CatcherInfo.find(abname);
+		if (itercatch2 != CatcherInfo.end()) {
+			Catcher acat(CatcherInfo, abname);
+			TeamInfo.setAwayCatcher(acat);
+		}
 	}
 	//원정팀 타순 설정 및 (현재 타자 설정)
 	TeamInfo.setAwayBatter(abatVec);
@@ -123,10 +127,11 @@ void init() {
 	InnNum = 1;
 	InnHA = 초;
 	Score[초] = Score[말] = 0;
-	//NumberPitch[원정] = TeamInfo.getAwayPitcher().getStat()[NP];
-	//NumberPitch[홈] = TeamInfo.getHomePitcher().getStat()[NP];
+	NumberPitch[원정] = TeamInfo.getAwayPitcher().getStat()[NP];
+	NumberPitch[홈] = TeamInfo.getHomePitcher().getStat()[NP];
 	CurrentBatter = TeamInfo.getAwayBatter()[0];
 	CurrentPitcher = TeamInfo.getHomePitcher();
+	CurrentCatcher = TeamInfo.getHomeCatcher();
 	tasoon[원정] = tasoon[홈] = 0;
 	//CurrentFielder 와 CurrentCatcher도 초기화
 
@@ -189,8 +194,24 @@ void plusOutCount() {
 	if (OutCount == 3) changeInning();
 
 }
+void setCurrentInfo() {
+	if (InnHA == 초) {
+		//현재 타자,현재투수 설정
+		CurrentBatter = TeamInfo.getAwayBatter()[tasoon[원정]];
+		CurrentPitcher = TeamInfo.getHomePitcher();
+		CurrentCatcher = TeamInfo.getHomeCatcher();
+
+	}
+	else if (InnHA == 말) {
+		CurrentBatter = TeamInfo.getHomeBatter()[tasoon[홈]];
+		CurrentPitcher = TeamInfo.getAwayPitcher();
+		CurrentCatcher = TeamInfo.getAwayCatcher();
+
+	}
+}
 
 void  printOutCount() {
+	cout << endl;
 	cout << OutCount << "아웃" << endl;
 	//opengl 사용시
 }
@@ -227,6 +248,21 @@ void setPercentage() {
 	Percent[FO] = Percent[SO]+(int)((CurrentBatter.getStat()[FO] + CurrentPitcher.getStat()[FO]) / 2.0 * Out);
 	Percent[GO] = 10000;
 }
+void setandPrintCurrent() {
+	setCurrentInfo();
+	printOutCount();
+	printCurrentInfo();
+	
+	if (NumberPitch[!InnHA] <= -20) {
+		cout << "한계투구수 초과로 다음 경기 출전 정지" << endl;
+	}
+	else if (NumberPitch[!InnHA] <= 0) {
+		cout << "한계투구수 도달" << endl;
+		CurrentPitcher.needChange();
+	}
+	
+	setPercentage();
+}
 /*void updateScore() {
 	vector<Runner> temp;
 	for (Runner Runners : BaseSit) {
@@ -246,12 +282,11 @@ void setPercentage() {
 int main() {
 	//타자 정보 (아규먼트 변경 필요)
 	Batting.setPlayerInfo("batterstat.txt", 8);
-	Fielding.setPlayerInfo("test.txt", 6);
 	Running.setPlayerInfo("runnerstat.txt", 3);
 	//투수 정보 (아규먼트 변경 필요)
-	Pitching.setPlayerInfo("pitcherstat.txt", 8);
+	Pitching.setPlayerInfo("pitcherstat.txt", 10);
 	//포수 정보 (아규먼트 변경 필요)
-	Catching.setPlayerInfo("test.txt", 6);
+	Catching.setPlayerInfo("catcherstat.txt", 3);
 
 	init();
 	Random random;
@@ -271,42 +306,114 @@ int main() {
 
 
 		//현재투수,현재 타자 설정
-		if (InnHA == 초) {
-			//현재 타자,현재투수 설정
-			CurrentBatter=TeamInfo.getAwayBatter()[tasoon[원정]];
-			CurrentPitcher=TeamInfo.getHomePitcher();
-			
-		}
-		else if (InnHA == 말) {
-			CurrentBatter = TeamInfo.getHomeBatter()[tasoon[홈]];
-			CurrentPitcher = TeamInfo.getAwayPitcher();
-			
-		}
-		//현재투수,현재타자 정보 출력, 확률 계산
-		cout << endl;
-		printOutCount();
-		printCurrentInfo();
-		setPercentage();
-
+		setandPrintCurrent();
+		
 		string What;
 		cin >> What;
-		
-		//포수 스탯
+
+		if (What == "번트"&&base.checkBuntAv()) {
+			//do something
+			int bunt = random.hitBall();
+			int buntBound = 5830;
+			if (bunt <= buntBound) {
+				cout << "번트 성공" << endl;
+				base.additionalBase(B);
+				NumberPitch[!InnHA] -= 1;
+				plusTasoon();
+				plusOutCount();
+				setandPrintCurrent();
+				string stop;
+				cin >> stop;
+			}
+			else if (bunt > buntBound&& bunt <= buntBound + 1000) {
+				cout << "번트 실패 아웃" << endl;
+				plusTasoon();
+				plusOutCount(); 
+				setandPrintCurrent();
+				string stop;
+				cin >> stop;
+			}
+			else {
+				cout << "번트 실패->강공 전환" << endl;
+				string stop;
+				cin >> stop;
+			}
+		}
+		else if (What == "투수교체") {
+			//do something
+			auto PitcherInfo = Pitching.getPlayerInfo();
+			string cpname;
+			cout << "투수 이름 입력하세요: ";
+			cin >> cpname;
+			auto iterP = PitcherInfo.find(cpname);
+			while (iterP == PitcherInfo.end()) {
+				cout << "다시 입력하세요: ";
+				cin >> cpname;
+				iterP = PitcherInfo.find(cpname);
+			}
+			Pitcher cPitcher(PitcherInfo, cpname);
+			if (InnHA == 초) {
+				TeamInfo.setHomePitcher(cPitcher);
+				NumberPitch[홈] = TeamInfo.getHomePitcher().getStat()[NP];
+			}
+			else {
+				TeamInfo.setAwayPitcher(cPitcher);
+				NumberPitch[원정] = TeamInfo.getAwayPitcher().getStat()[NP];
+			}
+			setandPrintCurrent();
+			string stop;
+			cin >> stop;
+		}
+		else if (What == "타자교체") {
+			auto BatterInfo = Batting.getPlayerInfo();
+			string cbname;
+			cout << "타자 이름 입력하세요: ";
+			cin >> cbname;
+			auto iterB = BatterInfo.find(cbname);
+			while (iterB == BatterInfo.end()) {
+				cout << "다시 입력하세요: ";
+				cin >> cbname;
+				iterB = BatterInfo.find(cbname);
+			}
+			Batter cBatter(BatterInfo, cbname);
+			if (InnHA == 초)
+				TeamInfo.changeAwayBatter(cBatter, tasoon[원정]);
+			else
+				TeamInfo.changeHomeBatter(cBatter, tasoon[홈]);
+			setandPrintCurrent();
+			string stop;
+			cin >> stop;
+		}
+		//폭투
+		int pass = random.hitBall();
+		int passBound = (int)(CurrentCatcher.getStat()[포수폭투허용] * CurrentPitcher.getStat()[BB]*125);
+		if (pass <= passBound) {
+			//추가진루
+			cout << "폭투" << endl;
+			base.additionalBase(P);
+			Score[InnHA] += base.retScore();
+			string stop;
+			cin >> stop;
+		}
+		//자동도루
 		if (base.checkStealAv()) {
 			int stealAttNum = random.hitBall();
 			//현재 투수 도루가능 스탯(평균 1) * 주자 도루시도 확률 스탯
-			int stealAttBound = CurrentPitcher.getStat()[SAP] * base.getFirstBaseStat()[stealAttP];
+			int stealAttBound = (int)(CurrentPitcher.getStat()[투수도루시도] *CurrentCatcher.getStat()[포수도루시도] *base.getFirstBaseStat()[주자도루시도]);
 			if (stealAttNum <= stealAttBound) {
 				int stealNum = random.hitBall();
-				//현재 포수 도루저지 스탯(평균 1)*주자 도루확률 스탯(base.getFirstBase().getStat()
-				//int stealBound= 
+				int stealBound = (int)(CurrentCatcher.getStat()[포수도루허용] * base.getFirstBaseStat()[주자도루성공]);
+				if (stealNum <= stealBound) {
+					cout << "도루 성공" << endl;
+					base.additionalBase(SB);
+					string stop;
+					cin >> stop;
+				}
+				else {
+					cout << "도루 실패" << endl;
+					plusOutCount();
+				}
 			}
-		}
-		if (What == "도루") {
-			//do something
-		}
-		else if (What == "교체") {
-			//do something
 		}
 		
 
@@ -323,7 +430,7 @@ int main() {
 			string toBB = CurrentBatter.getName();
 			Runner toBBR(RunnerStat, toBB);
 			base.moveRunner(BB, toBBR);
-			
+			NumberPitch[!InnHA] -= random.randNP(BB);
 			plusTasoon();
 		}
 		else if (number <= Percent[SIN]) {
@@ -334,7 +441,7 @@ int main() {
 			Runner toSINR(RunnerStat, toSIN);
 			base.moveRunner(SIN, toSINR);
 			base.additionalBase(SIN);
-			
+			NumberPitch[!InnHA] -= random.randNP(SIN);
 			plusTasoon();
 		}
 		else if (number <= Percent[DOU]) {
@@ -345,6 +452,7 @@ int main() {
 			Runner toDOUR(RunnerStat, toDOU);
 			base.moveRunner(DOU, toDOUR);
 			base.additionalBase(DOU);
+			NumberPitch[!InnHA] -= random.randNP(DOU);
 			plusTasoon();
 		}
 		else if (number <= Percent[TRI]) {
@@ -354,7 +462,7 @@ int main() {
 			string toTRI = CurrentBatter.getName();
 			Runner toTRIR(RunnerStat, toTRI);
 			base.moveRunner(TRI, toTRIR);
-			
+			NumberPitch[!InnHA] -= random.randNP(TRI);
 			plusTasoon();
 		}
 		else if (number <= Percent[HR]) {
@@ -364,12 +472,13 @@ int main() {
 			string toHR = CurrentBatter.getName();
 			Runner toHRR(RunnerStat, toHR);
 			base.moveRunner(HR, toHRR);
-		
+			NumberPitch[!InnHA] -= random.randNP(HR);
 			plusTasoon();
 		}
 		else if (number <= Percent[SO]) {
 			//삼진
 			cout << "삼진~~" << endl;
+			NumberPitch[!InnHA] -= random.randNP(SO);
 			plusTasoon();
 			plusOutCount();
 		}
@@ -377,29 +486,42 @@ int main() {
 			//플라이
 			cout << "플라이 아웃" << endl;
 			base.additionalBase(FO);
-			
+			NumberPitch[!InnHA] -= random.randNP(FO);
 			plusTasoon();
 			plusOutCount();
 			//일정확률로 추가진루
 		}
-		else if (number <= 10000) {
+		else if (number <= 9832) {
 			
 			if (base.checkDO(OutCount)) {
 				cout << "병살 ㅅㄱ" << endl;
 				base.additionalBase(DO);
 				plusOutCount();
 			}
-			else
+			else {
 				cout << "땅볼" << endl;
 				base.additionalBase(GO);
-			
+			}
+			NumberPitch[!InnHA] -= random.randNP(GO);
 			plusTasoon();
 			plusOutCount();
 			//일정확률로 추가진루, 일정확률로 병살타.
 		}
+		else if (number <= 10000) {
+			cout << "실책출루 ㄱㅇㄷ" << endl;
+			string toER = CurrentBatter.getName();
+			Runner toERR(RunnerStat, toER);
+			base.moveRunner(SIN, toERR); 
+			NumberPitch[!InnHA] -= random.randNP(SIN);
+			plusTasoon();
+		}
 		
-		cout << number << endl;
+		//cout << number << endl;
 		Score[InnHA] += base.retScore();
+		for (int i = 0; i < base.getSit().size(); i++) {
+			cout << base.getSit()[i];
+		}
+		cout << "루" << endl;
 		printScoreInfo();
 		
 	

@@ -1,6 +1,8 @@
 #pragma once
 #include<vector>
 #include"Runner.h"
+
+enum 숫자계산 { BB, SIN, DOU, TRI, HR, SO, FO, GO, DO, SB, P, B };
 using namespace std;
 class Base
 {public:
@@ -10,7 +12,10 @@ class Base
 	int retScore();
 	bool checkDO(int OutCount);
 	bool checkStealAv();
+	bool checkBuntAv();
 	vector<double> getFirstBaseStat();
+	//확인 후 삭제
+	vector<bool> getSit();
 private:
 	vector<Runner> firstBase;
 	vector<Runner> secondBase;
