@@ -1,4 +1,9 @@
 ﻿  소스.cpp
-C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(314,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(322,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(335,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(343,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(350,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(354,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(360,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(366,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(373,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   GwiinSeries.vcxproj -> C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\Debug\GwiinSeries.exe
