@@ -1,12 +1,17 @@
+#define PI 3.141592
+#define WIDTH 800
+#define HEIGHT 600
 #include "Input.h"
 #include "CurrentPlayer.h"
 #include "Scoreboard.h"
 #include "Random.h"
 #include "Base.h"
 #include <stdio.h>
+#include <math.h>
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <GL/glut.h>
 using namespace std;
 Input Batting;
 Input Running;
@@ -15,7 +20,6 @@ Input Catching;
 CurrentPlayer TeamInfo;
 enum 초말 { 초, 말 };
 enum 원정홈 { 원정, 홈 };
-
 int OutCount;
 int InnNum;
 bool InnHA;
@@ -32,6 +36,8 @@ Base base;
 vector<string> result[2][9];
 vector<string> startBatterHome;
 vector<string> startBatterAway;
+Random random;
+map<string, vector<double>> RunnerStat;
 
 void init() {
 	string hteam, ateam;
@@ -217,7 +223,16 @@ void setCurrentInfo() {
 
 void  printOutCount() {
 	cout << endl;
-	cout << OutCount << "아웃" << endl;
+	cout << "아웃: ";
+	if (OutCount == 0) {
+		cout << "○○" << endl;
+	}
+	else if (OutCount == 1) {
+		cout << "●○" << endl;
+	}
+	else if (OutCount == 2) {
+		cout << "●●" << endl;
+	}
 	//opengl 사용시
 }
 void printScoreInfo() {
@@ -239,6 +254,28 @@ void printEndInfo() {
 	else cout << (Score[원정] > Score[홈] ? TeamInfo.getAwayTeam() : TeamInfo.getHomeTeam()) << " 승리" << endl;
 
 }
+void printRunnerInfo() {
+	vector<bool> RunnerInfoVec = base.getSit();
+	//2루
+	if (RunnerInfoVec[1] == true) {
+		cout << "    ◆" << endl;
+	}
+	else {
+		cout << "    ◇" << endl;
+	}
+	if (RunnerInfoVec[0] == true && RunnerInfoVec[2] == true) {
+		cout << "  ◆  ◆" << endl;
+	}
+	else if (RunnerInfoVec[0] == true && RunnerInfoVec[2] == false) {
+		cout << "  ◇  ◆" << endl;
+	}
+	else if (RunnerInfoVec[0] == false && RunnerInfoVec[2] == true) {
+		cout << "  ◆  ◇" << endl;
+	}
+	else if (RunnerInfoVec[0] == false && RunnerInfoVec[2] == false) {
+		cout << "  ◇  ◇" << endl;
+	}
+}
 void setPercentage() {
 	//다시 만들 것
 	for (int i = 0; i < 8; i++) {
@@ -256,6 +293,7 @@ void setPercentage() {
 void setandPrintCurrent() {
 	setCurrentInfo();
 	printOutCount();
+	printRunnerInfo();
 	printCurrentInfo();
 	
 	if (NumberPitch[!InnHA] <= -20) {
@@ -288,6 +326,161 @@ void setGameRecord() {
 	}
 	fs_h.close();
 }
+void addressInput(string What) {
+	if (What == "번트" && base.checkBuntAv()) {
+		//do something
+		int bunt = random.hitBall();
+		int buntBound = 5830;
+		if (bunt <= buntBound) {
+			cout << "번트 성공" << endl;
+			base.additionalBase(B);
+			NumberPitch[!InnHA] -= 1;
+			plusTasoon();
+			plusOutCount();
+			setandPrintCurrent();
+			string stop;
+			cin >> stop;
+			addressInput(stop);
+		}
+		else if (bunt > buntBound&& bunt <= buntBound + 1000) {
+			cout << "번트 실패 아웃" << endl;
+			plusTasoon();
+			plusOutCount();
+			setandPrintCurrent();
+			string stop;
+			cin >> stop;
+			addressInput(stop);
+		}
+		else {
+			cout << "번트 실패->강공 전환" << endl;
+			string stop;
+			cin >> stop;
+			while (stop == "번트") {
+				string stop;
+				cin >> stop;
+			}
+			addressInput(stop);
+		}
+	}
+	else if (What == "투수교체") {
+		//do something
+		auto PitcherInfo = Pitching.getPlayerInfo();
+		string cpname;
+		cout << "투수 이름 입력하세요: ";
+		cin >> cpname;
+		auto iterP = PitcherInfo.find(cpname);
+		while (iterP == PitcherInfo.end()) {
+			cout << "다시 입력하세요: ";
+			cin >> cpname;
+			iterP = PitcherInfo.find(cpname);
+		}
+		Pitcher cPitcher(PitcherInfo, cpname);
+		if (InnHA == 초) {
+			TeamInfo.setHomePitcher(cPitcher);
+			NumberPitch[홈] = TeamInfo.getHomePitcher().getStat()[NP];
+		}
+		else {
+			TeamInfo.setAwayPitcher(cPitcher);
+			NumberPitch[원정] = TeamInfo.getAwayPitcher().getStat()[NP];
+		}
+		setandPrintCurrent();
+		string stop;
+		cin >> stop;
+		addressInput(stop);
+	}
+	else if (What == "타자교체") {
+		auto BatterInfo = Batting.getPlayerInfo();
+		string cbname;
+		cout << "타자 이름 입력하세요: ";
+		cin >> cbname;
+		auto iterB = BatterInfo.find(cbname);
+		while (iterB == BatterInfo.end()) {
+			cout << "다시 입력하세요: ";
+			cin >> cbname;
+			iterB = BatterInfo.find(cbname);
+		}
+		Batter cBatter(BatterInfo, cbname);
+		if (InnHA == 초)
+			TeamInfo.changeAwayBatter(cBatter, tasoon[원정]);
+		else
+			TeamInfo.changeHomeBatter(cBatter, tasoon[홈]);
+		setandPrintCurrent();
+		string stop;
+		cin >> stop;
+		addressInput(stop);
+	}
+	else if (What == "고의사구" || What == "고의4구") {
+		cout << "자동고의4구" << endl;
+		string toBB = CurrentBatter.getName();
+		Runner toBBR(RunnerStat, toBB);
+		base.moveRunner(BB, toBBR);
+		result[InnHA][tasoon[InnHA]].push_back("고의4구");
+		plusTasoon();
+		setandPrintCurrent();
+		string stop;
+		cin >> stop;
+		addressInput(stop);
+	}
+}
+/*void drawBase(float x, float y) {
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	glBegin(GL_QUADS);
+	glColor3f(0, 1, 0);
+	glVertex3f(50, 0, 0);
+	glVertex3f(0, 50, 0);
+	glVertex3f(-50, 0, 0);
+	glVertex3f(0, -50, 0);
+	glEnd();
+	glPopMatrix();
+}
+void drawOut(float x, float y) {
+	glPushMatrix();
+	glTranslatef(x, y, 0);
+	glBegin(GL_TRIANGLE_FAN);
+	for (int j = 0; j < 50; j++) {
+		glColor3f(1, 0, 0);
+		glVertex2f(50 * cos(2 * j * PI / 50), 50 * sin(2 * j * PI / 50));	
+	}
+	glEnd();
+	glPopMatrix();
+}
+void renderScene() {
+	/*glClearColor(1, 1, 1, 0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	drawBase();
+	drawCircle(100, 100);
+	glFlush();
+	glClearColor(0, 0, 0, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity(); 
+	glOrtho(0, WIDTH, 0, HEIGHT, -100.0, 100.0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	//주자
+	vector<bool> drawBaseVec = base.getSit();
+
+	if (drawBaseVec[0] == true) {
+		drawBase(180, 0);
+	}
+	if(drawBaseVec[1]==true){
+		drawBase(120, 180);
+	}
+	if (drawBaseVec[2] == true) {
+		drawBase(60, 0);
+	}
+	//아웃카운트
+	if (OutCount == 1) {
+		drawOut(20, 20);
+	}
+	if (OutCount == 2) {
+		drawOut(40, 20);
+	}
+	glutSwapBuffers();
+}
 /*void updateScore() {
 	vector<Runner> temp;
 	for (Runner Runners : BaseSit) {
@@ -306,6 +499,7 @@ void setGameRecord() {
 }*/
 int main() {
 	//타자 정보 (아규먼트 변경 필요)
+	
 	Batting.setPlayerInfo("batterstat.txt", 8);
 	Running.setPlayerInfo("runnerstat.txt", 3);
 	//투수 정보 (아규먼트 변경 필요)
@@ -314,15 +508,14 @@ int main() {
 	Catching.setPlayerInfo("catcherstat.txt", 3);
 
 	init();
-	Random random;
-	enum 숫자계산 { BB, SIN, DOU, TRI, HR, SO, FO, GO };
-	//1-9회 ok 10-12회:초 공격이면 그대로 진행, 말공격이면 
-	enum 초말{초,말};
+	RunnerStat = Running.getPlayerInfo();
 	bool previousState = 말;
-	auto RunnerStat = Running.getPlayerInfo();
+	
 
 	while (!isGameEnd()) {
 		//공수교대시 이닝(초,말) 표시
+		
+	
 		if (previousState != InnHA) {
 			printInnInfo();
 			previousState = InnHA;
@@ -335,8 +528,8 @@ int main() {
 		
 		string What;
 		cin >> What;
-
-		if (What == "번트"&&base.checkBuntAv()) {
+		addressInput(What);
+		/*if (What == "번트"&&base.checkBuntAv()) {
 			//do something
 			int bunt = random.hitBall();
 			int buntBound = 5830;
@@ -409,6 +602,17 @@ int main() {
 			string stop;
 			cin >> stop;
 		}
+		else if (What == "고의사구"||What=="고의4구") {
+			cout << "자동고의4구" << endl;
+			string toBB = CurrentBatter.getName();
+			Runner toBBR(RunnerStat, toBB);
+			base.moveRunner(BB, toBBR);
+			result[InnHA][tasoon[InnHA]].push_back("고의4구");
+			plusTasoon();
+			setandPrintCurrent();
+			string stop;
+			cin >> stop;
+		}*/
 		//폭투
 		int pass = random.hitBall();
 		int passBound = (int)(CurrentCatcher.getStat()[포수폭투허용] * CurrentPitcher.getStat()[BB]*125);
@@ -417,8 +621,10 @@ int main() {
 			cout << "폭투" << endl;
 			base.additionalBase(P);
 			Score[InnHA] += base.retScore();
+			setandPrintCurrent();
 			string stop;
 			cin >> stop;
+			addressInput(stop);
 		}
 		//자동도루
 		if (base.checkStealAv()) {
@@ -431,14 +637,20 @@ int main() {
 				if (stealNum <= stealBound) {
 					cout << "도루 성공" << endl;
 					base.additionalBase(SB);
-					string stop;
-					cin >> stop;
+					//printRunnerInfo();
+					//printScoreInfo();
+					
 				}
 				else {
 					cout << "도루 실패" << endl;
 					base.SBOUT();
 					plusOutCount();
+					
 				}
+				setandPrintCurrent();
+				string stop;
+				cin >> stop;
+				addressInput(stop);
 			}
 		}
 		
@@ -554,11 +766,13 @@ int main() {
 		
 		//cout << number << endl;
 		Score[InnHA] += base.retScore();
-		for (int i = 0; i < base.getSit().size(); i++) {
+		/*for (int i = 0; i < base.getSit().size(); i++) {
 			cout << base.getSit()[i];
 		}
-		cout << "루" << endl;
+		cout << "루" << endl;*/
+		
 		printScoreInfo();
+
 		
 	
 	}
@@ -566,3 +780,18 @@ int main() {
 	setGameRecord();
 	return 0;
 }
+/*void main(int argc, char** argv) {
+	
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+	glutInitWindowPosition(650, 300);
+	glutInitWindowSize(800, 600);
+	glutCreateWindow("귀인시리즈 2020");
+	// register callbacks
+	glutDisplayFunc(renderScene);
+	//glutIdleFunc(GamePlay);
+
+	// enter GLUT event processing cycle
+	glutMainLoop();
+
+}*/

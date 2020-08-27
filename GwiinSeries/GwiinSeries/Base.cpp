@@ -207,6 +207,9 @@ void Base::SBOUT(){
 	firstBase.clear();
 }
 int Base::retScore() {
+	for (int i = 0; i < backHome.size(); i++) {
+		RunVec.push_back(backHome[i].getName());
+	}
 	int ret = backHome.size();
 	backHome.clear();
 	return ret;
@@ -256,4 +259,7 @@ vector<bool> Base::getSit() {
 	sit[1] = (secondBase.size() == 1);
 	sit[2] = (thirdBase.size() == 1);
 	return sit;
+}
+vector<string> Base::getRunVec() {
+	return RunVec;
 }

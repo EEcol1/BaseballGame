@@ -1,2 +1,4 @@
 ﻿  소스.cpp
-  GwiinSeries.vcxproj -> C:\Users\andre\Google 드라이브\이승현\BaseballGameVerC++\GwiinSeries\Debug\GwiinSeries.exe
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(314,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\GwiinSeries\소스.cpp(322,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  GwiinSeries.vcxproj -> C:\Users\andre\source\repos\EEcol1\BaseballGame\GwiinSeries\Debug\GwiinSeries.exe

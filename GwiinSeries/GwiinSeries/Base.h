@@ -17,11 +17,12 @@ class Base
 	vector<double> getFirstBaseStat();
 	//확인 후 삭제
 	vector<bool> getSit();
-
+	vector<string> getRunVec();
 private:
 	vector<Runner> firstBase;
 	vector<Runner> secondBase;
 	vector<Runner> thirdBase;
 	vector<Runner> backHome;
+	vector<string> RunVec;
 };
 
